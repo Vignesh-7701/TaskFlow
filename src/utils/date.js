@@ -39,6 +39,15 @@ export function formatDisplay(isoDate) {
 }
 
 /**
+ * A date with the weekday, for headings.
+ * @param {Date} date
+ * @returns {string} e.g. 'Saturday, 03 Oct 2026'
+ */
+export function formatLongDate(date) {
+  return format(date, 'EEEE, dd MMM yyyy');
+}
+
+/**
  * A task is overdue when it is not completed and its due date is before today.
  * @param {import('@/models/task').Task} task
  * @param {Date} [today]  only passed in tests; defaults to now

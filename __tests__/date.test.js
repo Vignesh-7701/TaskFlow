@@ -1,5 +1,12 @@
 import { STATUS } from '@/models/task';
-import { formatDisplay, isDueToday, isOverdue, isValidISODate, toISODate } from '@/utils/date';
+import {
+  formatDisplay,
+  formatLongDate,
+  isDueToday,
+  isOverdue,
+  isValidISODate,
+  toISODate,
+} from '@/utils/date';
 
 // A fixed "today" so the tests give the same result on any day: 2 Oct 2026, 3 pm.
 // Months count from 0 in JavaScript, so 9 means October.
@@ -51,6 +58,12 @@ describe('formatDisplay', () => {
 
   it('gives an empty text for a date that is not valid', () => {
     expect(formatDisplay('01/10/2026')).toBe('');
+  });
+});
+
+describe('formatLongDate', () => {
+  it('shows the weekday, day, short month and year', () => {
+    expect(formatLongDate(new Date(2026, 9, 3))).toBe('Saturday, 03 Oct 2026');
   });
 });
 
