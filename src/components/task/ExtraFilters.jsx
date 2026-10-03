@@ -1,4 +1,4 @@
-import { ScrollView, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { Chip } from '@/components/ui';
 import { PRIORITY } from '@/models/task';
@@ -34,6 +34,9 @@ export function ExtraFilters({
       horizontal
       showsHorizontalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
+      // Keep the row at its own height. By default a ScrollView may shrink to make room
+      // for the task list below, which made the chips and the list overlap.
+      style={styles.row}
       contentContainerStyle={{ gap: spacing.sm, alignItems: 'center' }}
     >
       {PRIORITY_FILTERS.map((filter) => (
@@ -60,3 +63,7 @@ export function ExtraFilters({
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  row: { flexGrow: 0, flexShrink: 0 },
+});
