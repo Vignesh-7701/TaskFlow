@@ -7,6 +7,7 @@ import {
   isDueToday,
   isOverdue,
   isValidISODate,
+  normalizeCsvDate,
   toISODate,
 } from '@/utils/date';
 
@@ -38,6 +39,38 @@ describe('fromISODate', () => {
   it('gives null for a date that is not valid', () => {
     expect(fromISODate('2026-02-30')).toBeNull();
     expect(fromISODate('')).toBeNull();
+  });
+});
+
+describe('normalizeCsvDate', () => {
+  it('keeps a YYYY-MM-DD date as it is', () => {
+    expect(normalizeCsvDate('2026-09-28')).toBe('2026-09-28');
+  });
+
+  it('turns a DD-MM-YYYY date into YYYY-MM-DD', () => {
+    expect(normalizeCsvDate('28-09-2026')).toBe('2026-09-28');
+    expect(normalizeCsvDate('01-10-2026')).toBe('2026-10-01');
+  });
+
+  it('reads DD-MM-YYYY as day first, never month first', () => {
+    expect(normalizeCsvDate('05-06-2026')).toBe('2026-06-05');
+  });
+
+  it('ignores spaces around the date', () => {
+    expect(normalizeCsvDate(' 28-09-2026 ')).toBe('2026-09-28');
+  });
+
+  it('gives null for a date that does not exist', () => {
+    expect(normalizeCsvDate('31-02-2026')).toBeNull();
+    expect(normalizeCsvDate('2026-02-30')).toBeNull();
+  });
+
+  it('gives null for any other format', () => {
+    expect(normalizeCsvDate('01/10/2026')).toBeNull();
+    expect(normalizeCsvDate('1-10-2026')).toBeNull();
+    expect(normalizeCsvDate('2026/10/01')).toBeNull();
+    expect(normalizeCsvDate('')).toBeNull();
+    expect(normalizeCsvDate(undefined)).toBeNull();
   });
 });
 

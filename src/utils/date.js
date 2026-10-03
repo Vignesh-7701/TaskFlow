@@ -5,6 +5,9 @@ import { STATUS } from '@/models/task';
 // Four digits, a dash, two digits, a dash, two digits: 2026-10-01
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
+// Day, month, year: 28-09-2026. The brackets capture each part so it can be read back.
+const DAY_FIRST_PATTERN = /^(\d{2})-(\d{2})-(\d{4})$/;
+
 /**
  * Turns a Date into the text form the app stores.
  * @param {Date} date
@@ -33,6 +36,29 @@ export function isValidISODate(value) {
     return false;
   }
   return isValid(parseISO(value));
+}
+
+/**
+ * Reads a date from a CSV file, which may be written as YYYY-MM-DD or DD-MM-YYYY (day first).
+ * Gives back the app's stored form, YYYY-MM-DD, or null if it is neither or not a real date.
+ * @param {string} value  e.g. '2026-09-28' or '28-09-2026'
+ * @returns {string|null} e.g. '2026-09-28'
+ */
+export function normalizeCsvDate(value) {
+  const text = typeof value === 'string' ? value.trim() : '';
+
+  if (isValidISODate(text)) {
+    return text;
+  }
+
+  const match = DAY_FIRST_PATTERN.exec(text);
+  if (match) {
+    const [, day, month, year] = match;
+    const isoDate = `${year}-${month}-${day}`;
+    return isValidISODate(isoDate) ? isoDate : null;
+  }
+
+  return null;
 }
 
 /**
