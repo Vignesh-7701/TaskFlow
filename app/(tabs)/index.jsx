@@ -22,9 +22,8 @@ export default function DashboardScreen() {
   const stats = useMemo(() => selectStats(tasks), [tasks]);
   const todayTasks = useMemo(() => tasks.filter((task) => isDueToday(task)), [tasks]);
 
-  const openTasks = (status) => {
-    router.push(status === 'all' ? '/tasks' : `/tasks?status=${status}`);
-  };
+  // Always name the status, even 'all', so the Tasks tab never keeps an older filter.
+  const openTasks = (status) => router.push(`/tasks?status=${status}`);
 
   const openTask = useCallback((id) => router.push(`/task/${id}`), [router]);
 

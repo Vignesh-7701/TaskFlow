@@ -17,8 +17,10 @@ const CHECKBOX_SIZE = 24;
  * @param {import('@/models/task').Task} props.task  the task to show
  * @param {(id: string) => void} props.onPress  called with the task's id when the card is tapped
  * @param {(id: string) => void} props.onToggleComplete  called with the task's id when the checkbox is tapped
+ * @param {(task: import('@/models/task').Task) => void} [props.onDelete]  called with the whole task
+ *   when the bin icon is tapped. Leave it out and no bin icon is shown.
  */
-function TaskCardBase({ task, onPress, onToggleComplete }) {
+function TaskCardBase({ task, onPress, onToggleComplete, onDelete }) {
   const { colors, spacing } = useTheme();
 
   const isDone = task.status === STATUS.COMPLETED;
@@ -58,7 +60,7 @@ function TaskCardBase({ task, onPress, onToggleComplete }) {
         </View>
 
         <View style={[styles.row, { gap: spacing.sm, paddingLeft: CHECKBOX_SIZE + spacing.sm }]}>
-          <AppText variant="muted" numberOfLines={1} style={styles.shrink}>
+          <AppText variant="muted" numberOfLines={1} style={styles.meta}>
             {task.category} · {formatDisplay(task.startDate)} → {formatDisplay(task.dueDate)}
           </AppText>
 
@@ -66,6 +68,17 @@ function TaskCardBase({ task, onPress, onToggleComplete }) {
             <AppText variant="caption" style={[styles.overdue, { color: colors.danger }]}>
               Overdue
             </AppText>
+          ) : null}
+
+          {onDelete ? (
+            <Pressable
+              onPress={() => onDelete(task)}
+              hitSlop={spacing.md}
+              accessibilityRole="button"
+              accessibilityLabel={`Delete task ${task.title}`}
+            >
+              <Ionicons name="trash-outline" size={18} color={colors.textMuted} />
+            </Pressable>
           ) : null}
         </View>
       </Card>
@@ -80,7 +93,7 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center' },
   title: { flex: 1, fontWeight: '600' },
   done: { textDecorationLine: 'line-through' },
-  shrink: { flexShrink: 1 },
+  meta: { flex: 1 },
   overdue: { fontWeight: '600' },
   pressed: { opacity: 0.7 },
 });

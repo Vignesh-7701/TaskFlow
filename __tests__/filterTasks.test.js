@@ -1,4 +1,4 @@
-import { filterTasks, sortTasks } from '@/features/tasks/filterTasks';
+import { filterTasks, getCategories, sortTasks } from '@/features/tasks/filterTasks';
 import { PRIORITY, STATUS } from '@/models/task';
 
 const TASKS = [
@@ -80,6 +80,21 @@ describe('filterTasks', () => {
 
   it('gives an empty list when nothing matches', () => {
     expect(filterTasks(TASKS, { status: STATUS.PENDING, query: 'milk' })).toEqual([]);
+  });
+});
+
+describe('getCategories', () => {
+  it('lists each category once, A to Z', () => {
+    const tasks = [...TASKS, { ...TASKS[0], id: 'T4' }];
+    expect(getCategories(tasks)).toEqual(['Home', 'Personal', 'Work']);
+  });
+
+  it('skips empty categories', () => {
+    expect(getCategories([{ ...TASKS[0], category: '' }])).toEqual([]);
+  });
+
+  it('gives an empty list when there are no tasks', () => {
+    expect(getCategories([])).toEqual([]);
   });
 });
 

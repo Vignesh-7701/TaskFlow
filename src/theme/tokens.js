@@ -9,6 +9,7 @@ export const lightColors = {
   success: '#16A34A',
   warning: '#D97706',
   danger: '#DC2626',
+  overlay: 'rgba(17, 24, 39, 0.4)',
 };
 
 export const darkColors = {
@@ -22,6 +23,7 @@ export const darkColors = {
   success: '#22C55E',
   warning: '#F59E0B',
   danger: '#F87171',
+  overlay: 'rgba(0, 0, 0, 0.6)',
 };
 
 export const spacing = {

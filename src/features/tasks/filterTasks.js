@@ -1,6 +1,16 @@
 import { PRIORITY_WEIGHT } from '@/constants';
 
 /**
+ * The different categories used by the tasks, each once, in A to Z order.
+ * @param {import('@/models/task').Task[]} tasks
+ * @returns {string[]} e.g. ['Home', 'Personal', 'Work']
+ */
+export function getCategories(tasks) {
+  const unique = new Set(tasks.map((task) => task.category).filter(Boolean));
+  return [...unique].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+}
+
+/**
  * Keeps only the tasks that match every filter that is set.
  * @param {import('@/models/task').Task[]} tasks
  * @param {object} [filters]
