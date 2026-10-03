@@ -2,6 +2,7 @@ import { STATUS } from '@/models/task';
 import {
   formatDisplay,
   formatLongDate,
+  formatTimestamp,
   fromISODate,
   isDueToday,
   isOverdue,
@@ -70,6 +71,19 @@ describe('formatDisplay', () => {
 
   it('gives an empty text for a date that is not valid', () => {
     expect(formatDisplay('01/10/2026')).toBe('');
+  });
+});
+
+describe('formatTimestamp', () => {
+  it('shows date and time on the local clock', () => {
+    // Built from local parts, so the test gives the same result in any time zone.
+    const timestamp = new Date(2026, 9, 3, 14, 30).toISOString();
+    expect(formatTimestamp(timestamp)).toBe('03 Oct 2026, 14:30');
+  });
+
+  it('gives an empty text for a missing or broken timestamp', () => {
+    expect(formatTimestamp(undefined)).toBe('');
+    expect(formatTimestamp('not a time')).toBe('');
   });
 });
 

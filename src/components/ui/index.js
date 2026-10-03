@@ -1,5 +1,6 @@
 // One import point for the ui kit: import { Button, Card } from '@/components/ui';
 export { AppText } from './AppText';
+export { Badge } from './Badge';
 export { Button } from './Button';
 export { Card } from './Card';
 export { Chip } from './Chip';
@@ -8,6 +9,7 @@ export { DateField } from './DateField';
 export { EmptyState } from './EmptyState';
 export { ErrorState } from './ErrorState';
 export { FAB } from './FAB';
+export { InfoRow } from './InfoRow';
 export { Input } from './Input';
 export { Loader } from './Loader';
 export { Screen } from './Screen';

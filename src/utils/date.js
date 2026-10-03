@@ -48,6 +48,19 @@ export function formatDisplay(isoDate) {
 }
 
 /**
+ * A full timestamp (createdAt / updatedAt) shown as date and time on the phone's clock.
+ * @param {string} timestamp  e.g. '2026-10-03T09:00:00.000Z'
+ * @returns {string} e.g. '03 Oct 2026, 14:30', or '' when it is not a valid timestamp
+ */
+export function formatTimestamp(timestamp) {
+  if (typeof timestamp !== 'string') {
+    return '';
+  }
+  const date = parseISO(timestamp);
+  return isValid(date) ? format(date, 'dd MMM yyyy, HH:mm') : '';
+}
+
+/**
  * A date with the weekday, for headings.
  * @param {Date} date
  * @returns {string} e.g. 'Saturday, 03 Oct 2026'
