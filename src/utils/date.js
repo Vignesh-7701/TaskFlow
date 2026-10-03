@@ -15,6 +15,15 @@ export function toISODate(date) {
 }
 
 /**
+ * Turns a stored date back into a Date, e.g. for a date picker.
+ * @param {string} isoDate  e.g. '2026-10-01'
+ * @returns {Date|null} the date at 00:00, or null when the text is not a valid date
+ */
+export function fromISODate(isoDate) {
+  return isValidISODate(isoDate) ? parseISO(isoDate) : null;
+}
+
+/**
  * Checks that a text is a real date written as YYYY-MM-DD.
  * @param {string} value
  * @returns {boolean}

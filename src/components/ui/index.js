@@ -3,6 +3,8 @@ export { AppText } from './AppText';
 export { Button } from './Button';
 export { Card } from './Card';
 export { Chip } from './Chip';
+export { ChipGroup } from './ChipGroup';
+export { DateField } from './DateField';
 export { EmptyState } from './EmptyState';
 export { ErrorState } from './ErrorState';
 export { FAB } from './FAB';

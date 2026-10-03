@@ -4,7 +4,6 @@ import { FlatList, View } from 'react-native';
 
 import { TaskCard } from '@/components/task/TaskCard';
 import { AppText, EmptyState, FAB, Screen } from '@/components/ui';
-import { DevTaskButtons } from '@/dev/DevTaskButtons';
 import { DashboardHeader } from '@/features/dashboard/DashboardHeader';
 import { UploadShortcut } from '@/features/dashboard/UploadShortcut';
 import { selectStats } from '@/store/selectors';
@@ -43,7 +42,6 @@ export default function DashboardScreen() {
         ListHeaderComponent={
           <View style={{ gap: spacing.md }}>
             <DashboardHeader stats={stats} onOpenTasks={openTasks} />
-            <DevTaskButtons />
             <AppText variant="heading" style={{ marginTop: spacing.sm }}>
               Today&apos;s tasks
             </AppText>

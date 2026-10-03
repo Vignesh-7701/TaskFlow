@@ -2,6 +2,7 @@ import { STATUS } from '@/models/task';
 import {
   formatDisplay,
   formatLongDate,
+  fromISODate,
   isDueToday,
   isOverdue,
   isValidISODate,
@@ -25,6 +26,17 @@ describe('toISODate', () => {
 
   it('adds a leading zero to single-digit months and days', () => {
     expect(toISODate(new Date(2026, 0, 5))).toBe('2026-01-05');
+  });
+});
+
+describe('fromISODate', () => {
+  it('turns YYYY-MM-DD back into the same calendar day', () => {
+    expect(toISODate(fromISODate('2026-10-15'))).toBe('2026-10-15');
+  });
+
+  it('gives null for a date that is not valid', () => {
+    expect(fromISODate('2026-02-30')).toBeNull();
+    expect(fromISODate('')).toBeNull();
   });
 });
 
