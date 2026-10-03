@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { StatCard } from '@/components/task/StatCard';
 import { AppText } from '@/components/ui';
@@ -11,7 +11,7 @@ import { formatLongDate } from '@/utils/date';
  * The top of the Dashboard: greeting, today's date, the four counts and the overdue pill.
  * @param {object} props
  * @param {{ total: number, completed: number, pending: number, today: number, overdue: number }} props.stats
- * @param {(status: 'all'|'pending'|'completed') => void} props.onOpenTasks  opens the Task List with a filter
+ * @param {(status: 'all'|'pending'|'completed'|'overdue') => void} props.onOpenTasks  opens the Task List with a filter
  */
 export function DashboardHeader({ stats, onOpenTasks }) {
   const { colors, spacing, radius } = useTheme();
@@ -43,8 +43,12 @@ export function DashboardHeader({ stats, onOpenTasks }) {
       </View>
 
       {stats.overdue > 0 ? (
-        <View
-          style={[
+        <Pressable
+          onPress={() => onOpenTasks('overdue')}
+          hitSlop={spacing.sm}
+          accessibilityRole="button"
+          accessibilityLabel={`${stats.overdue} overdue. Show overdue tasks`}
+          style={({ pressed }) => [
             styles.pill,
             {
               borderColor: colors.danger,
@@ -53,13 +57,14 @@ export function DashboardHeader({ stats, onOpenTasks }) {
               paddingVertical: spacing.xs,
               gap: spacing.xs,
             },
+            pressed && styles.pressed,
           ]}
         >
           <Ionicons name="alert-circle-outline" size={16} color={colors.danger} />
           <AppText variant="caption" style={[styles.pillText, { color: colors.danger }]}>
             {stats.overdue} overdue
           </AppText>
-        </View>
+        </Pressable>
       ) : null}
     </View>
   );
@@ -69,4 +74,5 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row' },
   pill: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', borderWidth: 1 },
   pillText: { fontWeight: '600' },
+  pressed: { opacity: 0.7 },
 });

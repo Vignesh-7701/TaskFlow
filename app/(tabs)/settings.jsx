@@ -1,4 +1,5 @@
 import Constants from 'expo-constants';
+import { useState } from 'react';
 import { Alert } from 'react-native';
 
 import { ActionRow, AppText, Card, ChipGroup, InfoRow, Screen } from '@/components/ui';
@@ -6,6 +7,8 @@ import { confirmClearAll } from '@/features/tasks/confirmClearAll';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useTaskStore } from '@/store/taskStore';
 import { useTheme } from '@/theme/useTheme';
+import { exportFileName, tasksToCsv } from '@/utils/csvExport';
+import { shareCsvFile } from '@/utils/shareCsv';
 
 const THEME_OPTIONS = [
   { value: 'system', label: 'System' },
@@ -38,6 +41,28 @@ export default function SettingsScreen() {
     clearNote = `Deletes all ${taskCount} tasks`;
   }
 
+  const [isExporting, setIsExporting] = useState(false);
+
+  const exportTasks = async () => {
+    setIsExporting(true);
+    try {
+      // Read the tasks once, now: exporting does not need to redraw on every change.
+      const { tasks } = useTaskStore.getState();
+      await shareCsvFile(tasksToCsv(tasks), exportFileName());
+    } catch (exportError) {
+      Alert.alert('Export failed', exportError?.message ?? 'The file could not be shared.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  let exportNote = 'No tasks to export';
+  if (isExporting) {
+    exportNote = 'Preparing the file...';
+  } else if (taskCount > 0) {
+    exportNote = `${taskCount} ${taskCount === 1 ? 'task' : 'tasks'} as a CSV file`;
+  }
+
   const askToClearAll = () => {
     confirmClearAll(taskCount, () => {
       clearAll();
@@ -62,8 +87,13 @@ export default function SettingsScreen() {
 
       <AppText variant="heading">Data</AppText>
       <Card style={{ paddingVertical: 0 }}>
-        {/* Placeholder: export is built in Session 14. */}
-        <ActionRow icon="share-outline" label="Export tasks (CSV)" note="Coming soon" disabled />
+        <ActionRow
+          icon="share-outline"
+          label="Export tasks (CSV)"
+          note={exportNote}
+          disabled={taskCount === 0 || isExporting}
+          onPress={exportTasks}
+        />
         <ActionRow
           icon="trash-outline"
           label="Clear all tasks"

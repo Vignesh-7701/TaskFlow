@@ -74,6 +74,17 @@ describe('filterTasks', () => {
     expect(ids(filterTasks(TASKS, { priority: PRIORITY.LOW }))).toEqual(['T2']);
   });
 
+  it('keeps only pending tasks past their due date for "overdue"', () => {
+    // On 5 Oct: T1 (pending, due 3 Oct) is overdue; T2 is completed; T3 is due 10 Oct.
+    const today = new Date(2026, 9, 5);
+    expect(ids(filterTasks(TASKS, { status: 'overdue', today }))).toEqual(['T1']);
+  });
+
+  it('finds nothing overdue before any due date has passed', () => {
+    const today = new Date(2026, 9, 1);
+    expect(filterTasks(TASKS, { status: 'overdue', today })).toEqual([]);
+  });
+
   it('applies several filters together', () => {
     expect(ids(filterTasks(TASKS, { status: STATUS.PENDING, query: 'bake' }))).toEqual(['T3']);
   });

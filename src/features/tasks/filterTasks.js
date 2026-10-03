@@ -1,4 +1,5 @@
 import { PRIORITY_WEIGHT } from '@/constants';
+import { isOverdue } from '@/utils/date';
 
 /**
  * The different categories used by the tasks, each once, in A to Z order.
@@ -14,20 +15,26 @@ export function getCategories(tasks) {
  * Keeps only the tasks that match every filter that is set.
  * @param {import('@/models/task').Task[]} tasks
  * @param {object} [filters]
- * @param {'all'|'pending'|'completed'} [filters.status]
+ * @param {'all'|'pending'|'completed'|'overdue'} [filters.status]
+ *   'overdue' keeps pending tasks whose due date has passed.
  * @param {string} [filters.query]  search text, matched in title, description and category
  * @param {string|null} [filters.category]
  * @param {'low'|'medium'|'high'|null} [filters.priority]
+ * @param {Date} [filters.today]  only passed in tests; defaults to now
  * @returns {import('@/models/task').Task[]}
  */
 export function filterTasks(
   tasks,
-  { status = 'all', query = '', category = null, priority = null } = {},
+  { status = 'all', query = '', category = null, priority = null, today = new Date() } = {},
 ) {
   const searchText = query.trim().toLowerCase();
 
   return tasks.filter((task) => {
-    if (status !== 'all' && task.status !== status) {
+    if (status === 'overdue') {
+      if (!isOverdue(task, today)) {
+        return false;
+      }
+    } else if (status !== 'all' && task.status !== status) {
       return false;
     }
     if (category && task.category !== category) {

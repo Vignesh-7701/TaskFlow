@@ -39,6 +39,19 @@ export function isValidISODate(value) {
 }
 
 /**
+ * Writes a stored date day first, for CSV export: the opposite of normalizeCsvDate.
+ * @param {string} isoDate  e.g. '2026-09-28'
+ * @returns {string} e.g. '28-09-2026', or '' when the date is not valid
+ */
+export function toDayFirstDate(isoDate) {
+  if (!isValidISODate(isoDate)) {
+    return '';
+  }
+  const [year, month, day] = isoDate.split('-');
+  return `${day}-${month}-${year}`;
+}
+
+/**
  * Reads a date from a CSV file, which may be written as YYYY-MM-DD or DD-MM-YYYY (day first).
  * Gives back the app's stored form, YYYY-MM-DD, or null if it is neither or not a real date.
  * @param {string} value  e.g. '2026-09-28' or '28-09-2026'

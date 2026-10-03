@@ -8,6 +8,7 @@ import {
   isOverdue,
   isValidISODate,
   normalizeCsvDate,
+  toDayFirstDate,
   toISODate,
 } from '@/utils/date';
 
@@ -39,6 +40,21 @@ describe('fromISODate', () => {
   it('gives null for a date that is not valid', () => {
     expect(fromISODate('2026-02-30')).toBeNull();
     expect(fromISODate('')).toBeNull();
+  });
+});
+
+describe('toDayFirstDate', () => {
+  it('writes a stored date day first', () => {
+    expect(toDayFirstDate('2026-09-28')).toBe('28-09-2026');
+  });
+
+  it('gives an empty text for a date that is not valid', () => {
+    expect(toDayFirstDate('2026-02-30')).toBe('');
+    expect(toDayFirstDate(undefined)).toBe('');
+  });
+
+  it('is undone by normalizeCsvDate', () => {
+    expect(normalizeCsvDate(toDayFirstDate('2026-10-01'))).toBe('2026-10-01');
   });
 });
 
