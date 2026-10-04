@@ -45,7 +45,7 @@ export function SortMenu({ sortBy, sortDir, onChange }) {
         hitSlop={spacing.sm}
         accessibilityRole="button"
         accessibilityLabel={`Sorted by ${current.label}. Change sort`}
-        style={[styles.row, { gap: spacing.xs }]}
+        style={[styles.row, styles.target, { gap: spacing.xs }]}
       >
         <AppText variant="caption">Sort:</AppText>
         <AppText variant="caption" style={styles.bold}>
@@ -61,6 +61,7 @@ export function SortMenu({ sortBy, sortDir, onChange }) {
         accessibilityLabel={
           isAscending ? 'Ascending. Switch to descending' : 'Descending. Switch to ascending'
         }
+        style={[styles.target, styles.square]}
       >
         <Ionicons name={isAscending ? 'arrow-up' : 'arrow-down'} size={20} color={colors.text} />
       </Pressable>
@@ -123,6 +124,9 @@ export function SortMenu({ sortBy, sortDir, onChange }) {
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center' },
   bold: { fontWeight: '600' },
+  // At least 44 tall, the smallest comfortable touch size.
+  target: { minHeight: 44 },
+  square: { minWidth: 44, alignItems: 'center', justifyContent: 'center' },
   backdropArea: { flex: 1, justifyContent: 'flex-end' },
   option: { minHeight: 48 },
   optionText: { flex: 1 },

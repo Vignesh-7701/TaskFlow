@@ -37,7 +37,7 @@ function TaskCardBase({ task, onPress, onToggleComplete, onDelete }) {
         <View style={[styles.row, { gap: spacing.sm }]}>
           <Pressable
             onPress={() => onToggleComplete(task.id)}
-            hitSlop={spacing.sm}
+            hitSlop={spacing.md}
             accessibilityRole="checkbox"
             accessibilityState={{ checked: isDone }}
             accessibilityLabel={isDone ? 'Mark as pending' : 'Mark as completed'}
@@ -73,7 +73,7 @@ function TaskCardBase({ task, onPress, onToggleComplete, onDelete }) {
           {onDelete ? (
             <Pressable
               onPress={() => onDelete(task)}
-              hitSlop={spacing.md}
+              hitSlop={spacing.lg}
               accessibilityRole="button"
               accessibilityLabel={`Delete task ${task.title}`}
             >

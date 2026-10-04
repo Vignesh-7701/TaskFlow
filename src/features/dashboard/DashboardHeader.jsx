@@ -45,7 +45,7 @@ export function DashboardHeader({ stats, onOpenTasks }) {
       {stats.overdue > 0 ? (
         <Pressable
           onPress={() => onOpenTasks('overdue')}
-          hitSlop={spacing.sm}
+          hitSlop={spacing.md}
           accessibilityRole="button"
           accessibilityLabel={`${stats.overdue} overdue. Show overdue tasks`}
           style={({ pressed }) => [

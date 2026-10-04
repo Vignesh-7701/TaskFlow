@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Loader } from '@/components/ui';
 import { useTaskStore } from '@/store/taskStore';
 import { ThemeProvider } from '@/theme/ThemeProvider';
@@ -11,9 +12,11 @@ import { useTheme } from '@/theme/useTheme';
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={styles.fill}>
-      <ThemeProvider>
-        <RootStack />
-      </ThemeProvider>
+      <ErrorBoundary>
+        <ThemeProvider>
+          <RootStack />
+        </ThemeProvider>
+      </ErrorBoundary>
     </GestureHandlerRootView>
   );
 }
